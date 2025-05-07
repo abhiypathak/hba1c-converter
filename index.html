@@ -3,59 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HbA1c & Avg Glucose Converter</title>
-  <!-- Bootstrap CSS -->
+  <title>Glucose & HbA1c Converter</title>
+  <!-- Bootstrap 5 -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet">
   <style>
-    body {
-      background: linear-gradient(135deg, #6f86d6 0%, #48c6ef 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* — theme colors — */
+    :root {
+      --primary: #146C94;  /* deep teal */
+      --accent: #2CB1BC;   /* aqua */
+      --bg: #F1F7FA;       /* very light blue */
+      --surface: #FFFFFF;  /* card background */
+      --text: #333333;
     }
-    .converter-card {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 1rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      padding: 2rem;
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Roboto, sans-serif;
+    }
+
+    .full-height {
+      min-height: 100vh;
+    }
+
+    .card-container {
       max-width: 480px;
       width: 100%;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 1rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
     }
-    .converter-card h1 {
+
+    .card-container h2 {
+      color: var(--primary);
       font-weight: 600;
       margin-bottom: 1.5rem;
-      text-align: center;
-      color: #333;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 0.2rem rgba(44,177,188,0.25);
     }
   </style>
 </head>
 <body>
-  <div class="converter-card">
-    <h1>Glucose & HbA1c Converter</h1>
-    <form>
-      <div class="form-floating mb-3">
-        <input type="number" class="form-control" id="ngsp" placeholder="7.0" step="any">
-        <label for="ngsp">HbA1c (NGSP, %)</label>
+
+  <div class="d-flex align-items-center justify-content-center full-height">
+    <div class="card-container">
+      <h2 class="text-center">Glucose & HbA1c Converter</h2>
+
+      <div class="mb-3">
+        <label for="ngsp" class="form-label">HbA1c (NGSP, %)</label>
+        <input type="number" id="ngsp" class="form-control form-control-lg" placeholder="e.g. 7.0" step="any">
       </div>
-      <div class="form-floating mb-3">
-        <input type="number" class="form-control" id="ifcc" placeholder="53" step="any">
-        <label for="ifcc">HbA1c (IFCC, mmol/mol)</label>
+
+      <div class="mb-3">
+        <label for="ifcc" class="form-label">HbA1c (IFCC, mmol/mol)</label>
+        <input type="number" id="ifcc" class="form-control form-control-lg" placeholder="e.g. 53" step="any">
       </div>
-      <div class="form-floating mb-3">
-        <input type="number" class="form-control" id="mgdl" placeholder="154" step="any">
-        <label for="mgdl">Avg Glucose (mg/dL)</label>
+
+      <div class="mb-3">
+        <label for="mgdl" class="form-label">Avg Glucose (mg/dL)</label>
+        <input type="number" id="mgdl" class="form-control form-control-lg" placeholder="e.g. 154" step="any">
       </div>
-      <div class="form-floating mb-3">
-        <input type="number" class="form-control" id="mmoll" placeholder="8.6" step="any">
-        <label for="mmoll">Avg Glucose (mmol/L)</label>
+
+      <div class="mb-3">
+        <label for="mmoll" class="form-label">Avg Glucose (mmol/L)</label>
+        <input type="number" id="mmoll" class="form-control form-control-lg" placeholder="e.g. 8.6" step="any">
       </div>
-    </form>
+    </div>
   </div>
 
-  <!-- Bootstrap JS bundle -->
+  <!-- Bootstrap JS (optional for future interactive bits) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
@@ -67,47 +94,47 @@
     const MGDL_TO_MMOLL     = 1/18;
     const MMOLL_TO_MGDL     = 18;
 
-    // Inputs
+    // Element refs
     const ngspInput  = document.getElementById('ngsp');
     const ifccInput  = document.getElementById('ifcc');
     const mgdlInput  = document.getElementById('mgdl');
     const mmollInput = document.getElementById('mmoll');
 
-    function updateFrom(source) {
+    function updateFrom(src) {
       let ngsp, ifcc, mgdl, mmoll;
 
-      if (source === 'ngsp') {
+      if (src === 'ngsp') {
         ngsp = parseFloat(ngspInput.value); if (isNaN(ngsp)) return;
         ifcc = (ngsp - A1C_IFCC_INTERCPT) / A1C_IFCC_SLOPE;
         mgdl = A1C_EAG_SLOPE * ngsp + A1C_EAG_INTERCPT;
         mmoll = mgdl * MGDL_TO_MMOLL;
       }
-      else if (source === 'ifcc') {
+      else if (src === 'ifcc') {
         ifcc = parseFloat(ifccInput.value); if (isNaN(ifcc)) return;
         ngsp = A1C_IFCC_SLOPE * ifcc + A1C_IFCC_INTERCPT;
         mgdl = A1C_EAG_SLOPE * ngsp + A1C_EAG_INTERCPT;
         mmoll = mgdl * MGDL_TO_MMOLL;
       }
-      else if (source === 'mgdl') {
+      else if (src === 'mgdl') {
         mgdl = parseFloat(mgdlInput.value); if (isNaN(mgdl)) return;
         ngsp = (mgdl - A1C_EAG_INTERCPT) / A1C_EAG_SLOPE;
         ifcc = (ngsp - A1C_IFCC_INTERCPT) / A1C_IFCC_SLOPE;
         mmoll = mgdl * MGDL_TO_MMOLL;
       }
-      else if (source === 'mmoll') {
+      else if (src === 'mmoll') {
         mmoll = parseFloat(mmollInput.value); if (isNaN(mmoll)) return;
         mgdl = mmoll * MMOLL_TO_MGDL;
         ngsp = (mgdl - A1C_EAG_INTERCPT) / A1C_EAG_SLOPE;
         ifcc = (ngsp - A1C_IFCC_INTERCPT) / A1C_IFCC_SLOPE;
       }
 
-      if (source !== 'ngsp')  ngspInput.value  = ngsp.toFixed(2);
-      if (source !== 'ifcc')  ifccInput.value  = ifcc.toFixed(1);
-      if (source !== 'mgdl')  mgdlInput.value  = mgdl.toFixed(0);
-      if (source !== 'mmoll') mmollInput.value = mmoll.toFixed(1);
+      if (src !== 'ngsp')  ngspInput.value  = ngsp.toFixed(2);
+      if (src !== 'ifcc')  ifccInput.value  = ifcc.toFixed(1);
+      if (src !== 'mgdl')  mgdlInput.value  = mgdl.toFixed(0);
+      if (src !== 'mmoll') mmollInput.value = mmoll.toFixed(1);
     }
 
-    // Attach listeners
+    // Wire events
     ngspInput .addEventListener('input', () => updateFrom('ngsp'));
     ifccInput .addEventListener('input', () => updateFrom('ifcc'));
     mgdlInput .addEventListener('input', () => updateFrom('mgdl'));
