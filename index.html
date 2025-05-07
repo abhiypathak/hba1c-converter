@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HbA1c Converter</title>
+  <title>Glucose & HbA1c Converter</title>
   <!-- Bootstrap 5 -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -13,7 +13,7 @@
     :root {
       --primary: #146C94;  /* deep teal */
       --accent: #2CB1BC;   /* aqua */
-      --bg: #b0def5;       /* very light blue */
+      --bg: #F1F7FA;       /* very light blue */
       --surface: #FFFFFF;  /* card background */
       --text: #333333;
     }
@@ -56,9 +56,10 @@
 </head>
 <body>
 
+  <!-- Converter Card -->
   <div class="d-flex align-items-center justify-content-center full-height">
     <div class="card-container">
-      <h2 class="text-center">HbA1c Converter</h2>
+      <h2 class="text-center">Glucose & HbA1c Converter</h2>
 
       <div class="mb-3">
         <label for="ngsp" class="form-label">HbA1c (NGSP, %)</label>
@@ -82,11 +83,125 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS (optional for future interactive bits) -->
+  <!-- Regional Standards -->
+  <div class="container my-5">
+    <h3 class="text-center mb-4">Regional Diabetes Measurement Standards</h3>
+    <div class="accordion" id="regionAccordion">
+      <!-- North America -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingNA">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNA" aria-expanded="true" aria-controls="collapseNA">
+            North America
+          </button>
+        </h2>
+        <div id="collapseNA" class="accordion-collapse collapse show" aria-labelledby="headingNA" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong>
+            <ul>
+              <li><strong>United States:</strong> mg/dL (fasting: 70–99 mg/dL normal; ≥126 mg/dL diagnostic).</li>
+              <li><strong>Canada:</strong> mmol/L (fasting: 4.0–5.4 mmol/L normal; ≥7.0 mmol/L diagnostic).</li>
+            </ul>
+            <strong>HbA1c:</strong> DCCT % (<5.7% normal; ≥6.5% diabetes) with IFCC (mmol/mol) (<39 normal; ≥48 diabetes).
+          </div>
+        </div>
+      </div>
+      <!-- Europe -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingEU">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEU" aria-expanded="false" aria-controls="collapseEU">
+            Europe
+          </button>
+        </h2>
+        <div id="collapseEU" class="accordion-collapse collapse" aria-labelledby="headingEU" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong> mmol/L (fasting: 4.0–5.4; ≥7.0 diagnostic).<br>
+            <strong>HbA1c:</strong> Primarily IFCC (mmol/mol) (<39 normal; ≥48 diabetes). DCCT % sometimes noted (5.7–6.4% prediabetes).
+          </div>
+        </div>
+      </div>
+      <!-- Asia -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingAS">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAS" aria-expanded="false" aria-controls="collapseAS">
+            Asia
+          </button>
+        </h2>
+        <div id="collapseAS" class="accordion-collapse collapse" aria-labelledby="headingAS" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong>
+            <ul>
+              <li>mg/dL in Japan, India, Philippines (fasting: 70–99; ≥126 diabetes).</li>
+              <li>mmol/L in China, South Korea, Australia-influenced regions (fasting: 4.0–5.4; ≥7.0 diabetes).</li>
+            </ul>
+            <strong>HbA1c:</strong> Increasing IFCC adoption; DCCT % still used.
+          </div>
+        </div>
+      </div>
+      <!-- Africa -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingAF">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAF" aria-expanded="false" aria-controls="collapseAF">
+            Africa
+          </button>
+        </h2>
+        <div id="collapseAF" class="accordion-collapse collapse" aria-labelledby="headingAF" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong> mmol/L in former British colonies (South Africa, Kenya); mg/dL in others (Egypt, Nigeria).<br>
+            <strong>HbA1c:</strong> IFCC use growing; testing access varies widely.
+          </div>
+        </div>
+      </div>
+      <!-- Oceania -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOC">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOC" aria-expanded="false" aria-controls="collapseOC">
+            Oceania
+          </button>
+        </h2>
+        <div id="collapseOC" class="accordion-collapse collapse" aria-labelledby="headingOC" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong> mmol/L (fasting: 4.0–5.4; ≥7.0 diagnostic).<br>
+            <strong>HbA1c:</strong> IFCC standard; DCCT % sometimes noted.
+          </div>
+        </div>
+      </div>
+      <!-- South America -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSA">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSA" aria-expanded="false" aria-controls="collapseSA">
+            South America
+          </button>
+        </h2>
+        <div id="collapseSA" class="accordion-collapse collapse" aria-labelledby="headingSA" data-bs-parent="#regionAccordion">
+          <div class="accordion-body">
+            <strong>Blood Glucose:</strong>
+            <ul>
+              <li>mg/dL in Brazil, Mexico (fasting: 70–99; ≥126 diabetes).</li>
+              <li>mmol/L in Argentina, Chile.</li>
+            </ul>
+            <strong>HbA1c:</strong> IFCC rising; DCCT % remains familiar.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Notes -->
+    <div class="mt-5">
+      <h3>Key Notes</h3>
+      <ul>
+        <li><strong>HbA1c Conversion:</strong> <code>IFCC (mmol/mol) = 10.93 × DCCT (%) − 23.5</code> (e.g., 6.5% ≈ 48 mmol/mol).</li>
+        <li><strong>Regional Variations:</strong> Labs in cosmopolitan areas may dual-report units (mg/dL & mmol/L; % & mmol/mol).</li>
+        <li><strong>Diagnostic Criteria:</strong> Fasting glucose ≥7.0 mmol/L or ≥126 mg/dL generally indicates diabetes, per local unit.</li>
+        <li>Always consult local guidelines; exceptions exist within countries.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Conversion Logic -->
   <script>
-    // Conversion constants
     const A1C_IFCC_SLOPE    = 0.09148;
     const A1C_IFCC_INTERCPT = 2.152;
     const A1C_EAG_SLOPE     = 28.7;
@@ -94,7 +209,6 @@
     const MGDL_TO_MMOLL     = 1/18;
     const MMOLL_TO_MGDL     = 18;
 
-    // Element refs
     const ngspInput  = document.getElementById('ngsp');
     const ifccInput  = document.getElementById('ifcc');
     const mgdlInput  = document.getElementById('mgdl');
@@ -102,26 +216,22 @@
 
     function updateFrom(src) {
       let ngsp, ifcc, mgdl, mmoll;
-
       if (src === 'ngsp') {
         ngsp = parseFloat(ngspInput.value); if (isNaN(ngsp)) return;
         ifcc = (ngsp - A1C_IFCC_INTERCPT) / A1C_IFCC_SLOPE;
         mgdl = A1C_EAG_SLOPE * ngsp + A1C_EAG_INTERCPT;
         mmoll = mgdl * MGDL_TO_MMOLL;
-      }
-      else if (src === 'ifcc') {
+      } else if (src === 'ifcc') {
         ifcc = parseFloat(ifccInput.value); if (isNaN(ifcc)) return;
         ngsp = A1C_IFCC_SLOPE * ifcc + A1C_IFCC_INTERCPT;
         mgdl = A1C_EAG_SLOPE * ngsp + A1C_EAG_INTERCPT;
         mmoll = mgdl * MGDL_TO_MMOLL;
-      }
-      else if (src === 'mgdl') {
+      } else if (src === 'mgdl') {
         mgdl = parseFloat(mgdlInput.value); if (isNaN(mgdl)) return;
         ngsp = (mgdl - A1C_EAG_INTERCPT) / A1C_EAG_SLOPE;
         ifcc = (ngsp - A1C_IFCC_INTERCPT) / A1C_IFCC_SLOPE;
         mmoll = mgdl * MGDL_TO_MMOLL;
-      }
-      else if (src === 'mmoll') {
+      } else if (src === 'mmoll') {
         mmoll = parseFloat(mmollInput.value); if (isNaN(mmoll)) return;
         mgdl = mmoll * MMOLL_TO_MGDL;
         ngsp = (mgdl - A1C_EAG_INTERCPT) / A1C_EAG_SLOPE;
@@ -134,7 +244,6 @@
       if (src !== 'mmoll') mmollInput.value = mmoll.toFixed(1);
     }
 
-    // Wire events
     ngspInput .addEventListener('input', () => updateFrom('ngsp'));
     ifccInput .addEventListener('input', () => updateFrom('ifcc'));
     mgdlInput .addEventListener('input', () => updateFrom('mgdl'));
